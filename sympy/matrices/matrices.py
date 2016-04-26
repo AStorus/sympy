@@ -474,10 +474,8 @@ class MatrixBase(object):
     def __mul__(self, other):
         """Return self*other where other is either a scalar or a matrix
         of compatible dimensions.
-
         Examples
         ========
-
         >>> from sympy.matrices import Matrix
         >>> A = Matrix([[1, 2, 3], [4, 5, 6]])
         >>> 2*A == A*2 == Matrix([[2, 4, 6], [8, 10, 12]])
@@ -492,10 +490,8 @@ class MatrixBase(object):
         ...
         ShapeError: Matrices size mismatch.
         >>>
-
         See Also
         ========
-
         matrix_multiply_elementwise
         """
         if getattr(other, 'is_Matrix', False):
@@ -588,6 +584,9 @@ class MatrixBase(object):
         return self + other
 
     def __div__(self, other):
+        #if dividing by 1x1 matrix, treat as division by scalar
+        if other.shape == (1,1):
+            return self*(S.One / other[0])
         return self*(S.One / other)
 
     def __truediv__(self, other):
